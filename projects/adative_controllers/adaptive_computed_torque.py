@@ -144,7 +144,6 @@ class DoublePendulumAdaptativeController(  controller.DynamicController ):
         self.name = 'Adaptive controller'
 
         self.A = np.zeros(5)
-        self.guess = np.zeros(5)
         self.T=np.eye(5)
         self.Kd = np.eye(2)
         self.lam  = 1   # Sliding surface slope
@@ -244,12 +243,12 @@ class DoublePendulumAdaptativeController(  controller.DynamicController ):
         Y[0,1]=ddq_r[1]*c2
         Y[0,2]=s2*dq[1]*dq_r[0]
         Y[0,3]=s2*(dq[0]+dq[1])*dq_r[1]
-        Y[0,4]=s1+s12
+        Y[0,4]=-s1-s12
         Y[1,0]=ddq_r[0]*c2
         Y[1,1]=ddq_r[1]
         Y[1,2]=s2*dq[0]*dq_r[0]
         Y[1,3]=0
-        Y[1,4]=s12
+        Y[1,4]=-s12
         
         b = np.dot(Y.T,s)
         dz=-1*np.dot( self.T , b )
@@ -280,14 +279,14 @@ class DoublePendulumAdaptativeController(  controller.DynamicController ):
         Y[0,1]=ddq_r[1]*c2
         Y[0,2]=s2*dq[1]*dq_r[0]
         Y[0,3]=s2*(dq[0]+dq[1])*dq_r[1]
-        Y[0,4]=s1+s12
+        Y[0,4]=-s1-s12
         Y[1,0]=ddq_r[0]*c2
         Y[1,1]=ddq_r[1]
         Y[1,2]=s2*dq[0]*dq_r[0]
         Y[1,3]=0
-        Y[1,4]=s12
+        Y[1,4]=-s12
         
-        self.A= self.guess + self.get_z_integral(z)
+        self.A= self.get_z_integral(z)
                 
         u                     = self.adaptative_torque(  Y , s  , q , t )
         
